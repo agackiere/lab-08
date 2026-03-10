@@ -12,10 +12,6 @@ first_url <- "https://collections.ed.ac.uk/art/search/*:*/Collection:%22edinburg
 page <- read_html(first_url)
 
 # scrape titles ----------------------------------------------------------------
-page %>%
-  html_nodes(".iteminfo") %>%
-  html_node("h3 a")
-
 titles <- page %>%
   html_nodes(".iteminfo") %>%
   html_node("h3 a") %>%
