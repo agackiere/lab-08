@@ -32,10 +32,13 @@ uoe_art <- uoe_art %>%
   select(title, artist, year, link)  
 ```
 
+Warning 1: Some pieces were discarded
+Warning 2: Missing pieces filled with NA
+Warning 3: NAs introduced by coercion 
 
 ## Exercise 11  
 
-*Write your answer here.*  
+Our output demonstrates that ```r sum(is.na(uoe_art$artist))``` pieces have missing artist info and ```r sum(is.na(uoe_art$year))``` pieces have missing year info.
 
 ```{r skim}
 skim(uoe_art)
@@ -45,21 +48,23 @@ skim(uoe_art)
 
 ## Exercise 12  
 
-*Continue with the same structure as above.*
+Our histogram demonstrates that there might be some outliers, but it's hard to tell visually.
 
 ```{r simple-histogram}
 ggplot(uoe_art, aes(x = year)) +
-  geom_histogram(binwidth = 10)
+  geom_histogram(binwidth = 5) +
+  theme_classic()
 
 ```
+
+Let's check for outliers using arrange.
 
 ```{r outlier-check}
 
 uoe_art %>%
   filter(!is.na(year)) %>%
   arrange(year) %>%
-  head(5)
-
+  head()
 
 ```
 
@@ -70,7 +75,8 @@ uoe_art %>%
 uoe_art <- uoe_art %>%
   mutate(year = if_else(year == 2, 1964, year))
 ggplot(uoe_art, aes(x = year)) +
-  geom_histogram(binwidth = 10)
+  geom_histogram(binwidth = 5) +
+  theme_classic()
 
 
 ```

@@ -43,9 +43,13 @@ uoe_art <- uoe_art %>%
     ## Caused by warning in `str_remove(date, "\\)") %>% as.numeric()`:
     ## ! NAs introduced by coercion
 
+Warning 1: Some pieces were discarded Warning 2: Missing pieces filled
+with NA Warning 3: NAs introduced by coercion
+
 ## Exercise 11
 
-*Write your answer here.*
+Our output demonstrates that `108` pieces have missing artist info and
+`1575` pieces have missing year info.
 
 ``` r
 skim(uoe_art)
@@ -81,11 +85,13 @@ Data summary
 
 ## Exercise 12
 
-*Continue with the same structure as above.*
+Our histogram demonstrates that there might be some outliers, but it’s
+hard to tell visually.
 
 ``` r
 ggplot(uoe_art, aes(x = year)) +
-  geom_histogram(binwidth = 10)
+  geom_histogram(binwidth = 5) +
+  theme_classic()
 ```
 
     ## Warning: Removed 1575 rows containing non-finite outside the scale range
@@ -93,21 +99,24 @@ ggplot(uoe_art, aes(x = year)) +
 
 ![](lab-08_files/figure-gfm/simple-histogram-1.png)<!-- -->
 
+Let’s check for outliers using arrange.
+
 ``` r
 uoe_art %>%
   filter(!is.na(year)) %>%
   arrange(year) %>%
-  head(5)
+  head()
 ```
 
-    ## # A tibble: 5 × 4
+    ## # A tibble: 6 × 4
     ##   title                    artist         year link                         
     ##   <chr>                    <chr>         <dbl> <chr>                        
     ## 1 "Death Mask "            H. Dempshall      2 ./record/21649?highlight=*:* 
     ## 2 "Mary Ann Park Sampler " Mary Ann Park  1819 ./record/102706?highlight=*:*
     ## 3 "Fine lawn collar "      Unknown        1820 ./record/102681?highlight=*:*
     ## 4 "Dying Gaul "            Unknown        1822 ./record/20597?highlight=*:* 
-    ## 5 "The Dead Christ "       Unknown        1831 ./record/20573?highlight=*:*
+    ## 5 "The Dead Christ "       Unknown        1831 ./record/20573?highlight=*:* 
+    ## 6 "Crouching Venus "       Sarti          1834 ./record/20572?highlight=*:*
 
 # Exercise 13
 
@@ -115,7 +124,8 @@ uoe_art %>%
 uoe_art <- uoe_art %>%
   mutate(year = if_else(year == 2, 1964, year))
 ggplot(uoe_art, aes(x = year)) +
-  geom_histogram(binwidth = 10)
+  geom_histogram(binwidth = 5) +
+  theme_classic()
 ```
 
     ## Warning: Removed 1575 rows containing non-finite outside the scale range
