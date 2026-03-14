@@ -46,6 +46,13 @@ uoe_art <- uoe_art %>%
 Warning 1: Some pieces were discarded Warning 2: Missing pieces filled
 with NA Warning 3: NAs introduced by coercion
 
+Basically, the date column is messy and inconsistent, so when R tries to
+split and parse it, some rows have too much or too little data, and some
+can’t be converted to a number. R either discards the extra stuff or
+fills in NA for what it can’t figure out. Since we only want the year
+when it’s easy to grab, NA is fine for the messy rows (essentially,
+we’re not losing anything meaningful).
+
 ## Exercise 11
 
 Our output demonstrates that `108` pieces have missing artist info and
@@ -85,12 +92,12 @@ Data summary
 
 ## Exercise 12
 
-Our histogram demonstrates that there might be some outliers, but it’s
-hard to tell visually.
+Our histogram demonstrates that there might be an outlier around year 0,
+but it’s hard to tell visually.
 
 ``` r
 ggplot(uoe_art, aes(x = year)) +
-  geom_histogram(binwidth = 5) +
+  geom_histogram(binwidth = 15) +
   theme_classic()
 ```
 
@@ -99,7 +106,8 @@ ggplot(uoe_art, aes(x = year)) +
 
 ![](lab-08_files/figure-gfm/simple-histogram-1.png)<!-- -->
 
-Let’s check for outliers using arrange.
+Let’s check for outliers using arrange. There’s an outlier, “Death Mask”
+at year 2.
 
 ``` r
 uoe_art %>%
@@ -119,6 +127,10 @@ uoe_art %>%
     ## 6 "Crouching Venus "       Sarti          1834 ./record/20572?highlight=*:*
 
 # Exercise 13
+
+The painting title “Death Mask (2) (1964)” has two sets of parentheses,
+so separate() split on the first one and captured 2 instead of 1964 as
+the year.
 
 ``` r
 uoe_art <- uoe_art %>%
@@ -153,7 +165,11 @@ uoe_art %>%
 
 The most commonly featured artist in the collection is **“Unknown”**.
 The university likely has many pieces of unknown artists because they
-might have been found or donated without any identifying information.
+might have been found or donated without any identifying information. I
+did know about Emma Gillies because my sister was an art history major
+at the University of Edinburgh :-). I did not know NA was also an
+artist - I’ve only encountered them in my data. Nice to hear they have a
+hobby too…
 
 # Exercise 15
 
